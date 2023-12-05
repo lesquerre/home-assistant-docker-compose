@@ -54,7 +54,7 @@ services:
     restart: always
     network_mode: host
     environment:
-      - TZ=Europe/Amsterdam
+      - TZ=Europe/Paris
     volumes:
       - ./config/zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro 
