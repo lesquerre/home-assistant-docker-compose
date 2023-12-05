@@ -19,5 +19,3 @@ frontend:
 serial:
   # Location of CC2531 USB sniffer, usually /dev/ttyACM0
   port: /dev/ttyZigbee
-advanced:
-  channel: 25
