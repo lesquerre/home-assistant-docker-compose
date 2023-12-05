@@ -8,8 +8,10 @@ services:
       # Local path where your home assistant config will be stored
       - ./config/home-assistant:/config
       - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
-    network_mode: host
+    restart: always
+    ports:
+    #Le port sur lequel sera accessible l'interface web PORT_EXPORTE:PORT_CONTENEUR
+      - 8123:8123
     privileged: true
     depends_on:
       - mariadb # MariaDB is optional (only if you would like to use a different database for HA).
@@ -21,7 +23,7 @@ services:
   mariadb:
     container_name: mariadb
     image: mariadb:latest
-    restart: unless-stopped
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: ha_db
@@ -31,23 +33,25 @@ services:
     volumes:
       # Local path where the database will be stored.
       - ./store/mariadb:/var/lib/mysql
-
+    ports:
+      - 3306:3306
 
   # eclipse-mosquitto (MQTT broker)
   eclipse-mosquitto:
     container_name: eclipse-mosquitto
     image: eclipse-mosquitto:latest
-    restart: unless-stopped
+    restart: always
     network_mode: host
     volumes:
       - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-
+    ports:
+      - 1883:1883
 
   # zigbee2mqtt
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:latest
-    restart: unless-stopped
+    restart: always
     network_mode: host
     environment:
       - TZ=Europe/Amsterdam
@@ -57,18 +61,19 @@ services:
     devices:
       - "${ZIGBEE_ADAPTER_TTY}:/dev/ttyZigbee"
     privileged: true
-
+    ports:    
+      - 8080:8080
 
  # Visual Studio code
   vscode:
    container_name: vscode
    image: codercom/code-server:latest
-   restart: unless-stopped
+   restart: always
    environment:
      PASSWORD: "${VSCODE_PASSWORD}"
    volumes:
      - .:/home/coder/project
      - ./store/coder:/home/coder/.local/share/code-server
    ports:
-     - "8443:8443"
+     - 8443:8443
    command: code-server --auth password --port 8443 --disable-telemetry /home/coder/project
