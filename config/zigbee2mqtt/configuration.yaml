@@ -23,4 +23,4 @@ frontend:
 # Serial settings
 serial:
   # Location of CC2531 USB sniffer, usually /dev/ttyACM0
-  port: /dev/Zigbee
+  port: /dev/ttyACM0
