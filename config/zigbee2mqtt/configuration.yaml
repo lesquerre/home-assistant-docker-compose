@@ -11,13 +11,11 @@ mqtt:
   # MQTT server URL
   server: mqtt://mosquitto
   # MQTT server authentication, uncomment if required:
-  # user: my_user
-  # password: my_password
-  keepalive: 60
-  password: admin
-  reject_unauthorized: true
-  user: admin
-  version: 4
+  # keepalive: 60
+  # password: admin
+  # reject_unauthorized: true
+  # user: admin
+  # version: 4
 frontend:
   port: 8080
 # Serial settings
