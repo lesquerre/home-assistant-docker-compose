@@ -53,7 +53,7 @@ services:
     ports:
       - 8080:8080
     devices:
-      - "${ZIGBEE_ADAPTER_TTY}":/dev/Zigbee
+      - "${ZIGBEE_ADAPTER_TTY}":/dev/ttyACM0
     restart: always
 
  # Visual Studio code
