@@ -41,7 +41,6 @@ services:
     container_name: eclipse-mosquitto
     image: eclipse-mosquitto:latest
     restart: always
-    network_mode: host
     volumes:
       - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
     ports:
@@ -52,7 +51,6 @@ services:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:latest
     restart: always
-    network_mode: host
     environment:
       - TZ=Europe/Paris
     volumes:
@@ -63,6 +61,8 @@ services:
     privileged: true
     ports:    
       - 8080:8080
+    depends_on:
+      - eclipse-mosquitto # aka mosquitto-mqtt is optional (only if you want to add Zigbee devices and have a zigbee sniffer attached).
 
  # Visual Studio code
   vscode:
