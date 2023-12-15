@@ -10,7 +10,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: always
     ports:
-    #Le port sur lequel sera accessible l'interface web PORT_EXPORTE:PORT_CONTENEUR
       - 8123:8123
     privileged: true
     depends_on:
@@ -52,11 +51,9 @@ services:
       - ./config/zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
     ports:
-    #Port Zigbee2MQTT
       - 8080:8080
     devices:
-    #Adresse de votre dongle usb ZigBee à changer par la votre (uniquement avant les ':')
-      - /dev/ttyACM0:/dev/ttyACM0
+      - "${ZIGBEE_ADAPTER_TTY}":/dev/Zigbee
     restart: always
 
  # Visual Studio code
