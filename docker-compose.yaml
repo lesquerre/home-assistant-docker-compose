@@ -16,8 +16,6 @@ services:
     depends_on:
       - mariadb # MariaDB is optional (only if you would like to use a different database for HA).
       - zigbee2mqtt  # zigbee2mqtt is optional (only if you want to add Zigbee devices and have a zigbee sniffer attached).
-      - eclipse-mosquitto # aka mosquitto-mqtt is optional (only if you want to add Zigbee devices and have a zigbee sniffer attached).
-
 
   # MariaDb
   mariadb:
@@ -36,33 +34,30 @@ services:
     ports:
       - 3306:3306
 
-  # eclipse-mosquitto (MQTT broker)
-  eclipse-mosquitto:
-    container_name: eclipse-mosquitto
+  mosquitto:
     image: eclipse-mosquitto:latest
-    restart: always
-    volumes:
-      - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    container_name: mqtt
     ports:
       - 1883:1883
+    volumes:
+    #Bind mount pour la configuration
+      - - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-  # zigbee2mqtt
   zigbee2mqtt:
-    container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:latest
-    restart: always
-    environment:
-      - TZ=Europe/Paris
+    container_name: zigbee2mqtt
+    depends_on:
+      - mosquitto
     volumes:
       - ./config/zigbee2mqtt:/app/data
-      - /run/udev:/run/udev:ro 
-    devices:
-      - "${ZIGBEE_ADAPTER_TTY}"
-    privileged: true
-    ports:    
+      - /run/udev:/run/udev:ro
+    ports:
+    #Port Zigbee2MQTT
       - 8080:8080
-    depends_on:
-      - eclipse-mosquitto # aka mosquitto-mqtt is optional (only if you want to add Zigbee devices and have a zigbee sniffer attached).
+    devices:
+    #Adresse de votre dongle usb ZigBee à changer par la votre (uniquement avant les ':')
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
 
  # Visual Studio code
   vscode:
