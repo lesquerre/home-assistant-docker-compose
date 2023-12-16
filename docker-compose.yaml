@@ -49,7 +49,7 @@ services:
     image: koenkk/zigbee2mqtt:latest
     container_name: zigbee2mqtt
     depends_on:
-      - mosquitto
+      - mqtt
     volumes:
       - ./config/zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
