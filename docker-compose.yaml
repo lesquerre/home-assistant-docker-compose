@@ -35,7 +35,7 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto:latest
-    container_name: mqtt
+    container_name: mosquitto
     restart: always
     ports:
       - 1883:1883
@@ -49,7 +49,7 @@ services:
     image: koenkk/zigbee2mqtt:latest
     container_name: zigbee2mqtt
     depends_on:
-      - mqtt
+      - mosquitto
     volumes:
       - ./config/zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
