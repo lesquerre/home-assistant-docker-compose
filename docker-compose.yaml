@@ -42,6 +42,8 @@ services:
     volumes:
     #Bind mount pour la configuration
       - ./config/mosquitto/:/mosquitto/config/
+      - ./config/mosquitto/data:/mosquitto/data
+      - ./config/mosquitto/log:/mosquitto/log
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:latest
